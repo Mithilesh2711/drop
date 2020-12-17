@@ -1,0 +1,100 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bgclr {
+  text-align:center !important;
+  color: auto;
+}
+
+.para{
+  font-size: 150%;
+}
+
+.about {
+  background: rgb(247, 239, 230);
+  text-align:left !important;
+  color: auto; 
+}
+
+.user-det{
+   color: hotpink;
+   text-align: center;
+}
+
+.fld {
+  color:rgb(7, 56, 7);
+  margin-top: 2px;
+  margin-bottom: 2px ;
+}
+
+.val {
+  color: rgb(95, 45, 10);
+  margin-top: 2px;
+  margin-bottom: 2px ;
+}
+
+
+.form-control {
+  padding-left: 0.8rem;
+}
+
+.fit { /* set relative picture size */
+  height:50vh;
+  width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.fit-carousel { /* set relative picture size */
+  height:65vh;
+  width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.fit-carousel-offer { /* set relative picture size */
+  
+  width: 100%;
+  display: block;
+  margin: auto;
+}
+
+.navbar-nav >  {
+  margin-right: 0;
+}
