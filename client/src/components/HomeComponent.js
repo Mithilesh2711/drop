@@ -570,7 +570,7 @@ class Home extends Component {
         else {
             return(
                 <div>
-                <Carousels />
+                
                     <Jumbotron>
                         <div className="container">
                             <div className="row row-header">
@@ -663,6 +663,7 @@ class Home extends Component {
                         </div>
                     </form>
                     </div>
+                    <Carousels />
                 </div>
             );
         }
