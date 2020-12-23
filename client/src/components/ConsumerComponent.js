@@ -450,7 +450,7 @@ class Consumer extends Component {
                 <h4>{this.props.errMess}</h4>
             );
         }
-        else {
+        else if(this.props.consumers.consumers.filter((consumer) => consumer.id === this.props.id)[0]) {
         if(this.props.auth.isAuthenticated) {
           if(localStorage.getItem('clicked'))  {
             if(this.props.auth.isAdmin)  
@@ -510,15 +510,17 @@ class Consumer extends Component {
                 <ModalHeader toggle={this.toggleModalPayment}>Payment Details</ModalHeader>
                 <ModalBody>
                     <Form>
+                        
+                        <FormGroup>
+                            <Label htmlFor="closeReading">Reading</Label>
+                            <Input type="Number" id="closeReading" name="closeReading"
+                            placeholder="Enter valid reading"
+                                value={this.state.closeReading} onChange={(e) => {this.setState({closeReading: e.target.value })}}  />
+                        </FormGroup>
                         <FormGroup>
                             <Label htmlFor="paid">Paid Amount</Label>
                             <Input type="Number" id="paid" name="paid"
                             value={this.state.paid} onChange={(e) => {this.setState({paid: e.target.value })}} />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label htmlFor="closeReading">Reading</Label>
-                            <Input type="Number" id="closeReading" name="closeReading"
-                                value={this.state.closeReading} onChange={(e) => {this.setState({closeReading: e.target.value })}}  />
                         </FormGroup>
                         <FormGroup>
                             <Label>Payment Method</Label>
@@ -541,8 +543,13 @@ class Consumer extends Component {
                                 withLabel={true}
                             />
                         </FormGroup>
+                        {this.props.payments.payments.filter(
+                           (payments) => payments.cid === this.props.id)[0].payments.reverse()[0].closeReading > this.state.closeReading ?
+                           console.log("Enter valid reading.") :
+                           <Button onClick={this.handlePayment} type="button" value="submit" color="primary">Add Payment</Button>
+                         }
+                       
                         
-                        <Button onClick={this.handlePayment} type="button" value="submit" color="primary">Add Payment</Button>
                     </Form>
                 </ModalBody>
                 </Modal>
@@ -552,7 +559,8 @@ class Consumer extends Component {
         }
 
 
-        if(this.props.payments.payments.length) {
+        if(this.props.payments.payments.filter((payments) => payments.cid === this.props.id)[0]) {
+            console.log("pay-len",this.props.payments.payments.filter((payments) => payments.cid === this.props.id)[0])
             localStorage.setItem('clicked', false);
         return(
             <div className="container">
@@ -725,6 +733,15 @@ class Consumer extends Component {
     }
 
    }
+
+    else {
+                    return(
+                        <div>
+                            <h1>Invalid Consumer Id</h1>
+                        </div>
+                    );
+                }
+
   }
 }
 

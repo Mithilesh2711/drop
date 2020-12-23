@@ -67,6 +67,7 @@ class Main extends Component {
       const consumerWithId = ({match}) => {
         return(
               <Consumer 
+              consumers={this.props.consumers}
             consumer={this.props.consumers.consumers.filter((consumer) => consumer.id === match.params.cid)[0]}
             isLoading={this.props.consumers.isLoading}  errMess={this.props.consumers.errMess} 
             id={match.params.cid} auth={this.props.auth} loginUser={this.props.loginUser } 
