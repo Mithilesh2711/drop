@@ -98,3 +98,8 @@
 .navbar-nav >  {
   margin-right: 0;
 }
+
+
+.nav-icon {
+  font-size:15px !important;
+}

@@ -211,6 +211,7 @@ class Home extends Component {
     }
 
     getId() {
+
    
         String.prototype.lpad = function(padString, length) {
             var str = this;

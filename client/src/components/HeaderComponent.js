@@ -25,9 +25,9 @@ class Header extends Component {
             <React.Fragment>
                 <Navbar dark color="dark" expand="md">
                     <div className="container">
-                        <NavbarToggler onClick={this.toggleNav} />
+                        <NavbarToggler className="nav-icon" onClick={this.toggleNav} />
                        <pre>        </pre> <NavbarBrand className="mr-auto" href="/">
-                           <img src="drop.jpg" height="50" width="100"
+                           <img src="drop.jpg" height="70" width="100"
                                 alt="Drop" />
                         </NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar>

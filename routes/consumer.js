@@ -38,14 +38,17 @@ router.post('/create',cors.cors, authenticate.verifyUser, authenticate.verifyAdm
     .then((user) => {
         if(user === null) {
             console.log("user is null");
+            console.log("body : ", req.body)
             Consumer.create(req.body)
             .then((user) => {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.json({"status":true,"msg":"Consumer Registration Successful!","res":user});
                 
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            }, (err) => {
+                console.log("Errr",err)
+                next(err)})
+            .catch((err) => {next(err)});
         }
         else if(user!==null) {
             res.statusCode = 404;
