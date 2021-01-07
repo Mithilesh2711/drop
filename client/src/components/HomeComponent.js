@@ -572,29 +572,6 @@ class Home extends Component {
             return(
                 <div>
                 
-                    <Jumbotron>
-                        <div className="container">
-                            <div className="row row-header">
-                                <div className="col-12 col-sm-5">
-                                    <h1>Drop Welcomes You</h1>
-                                    <p>Welcome to the best water service that provides pure and mineralized water 
-                                        in cheap rates.</p>
-                                </div>
-                                <div className="col-12 col-sm-5 offset-sm-2">
-                                    <h3>Consumer Login</h3>
-                                        <Form>
-                                        <Input type="text" id="id" name="id"
-                                        value={this.state.id3} onChange={(e) => {this.setState({id3: e.target.value })}} />
-                                        <Link to={`/consumer/${this.state.id3}`}>
-                                            <Button className="mt-2" outline type="submit" >
-                                                Submit
-                                            </Button>
-                                        </Link>
-                                        </Form>
-                                </div>
-                            </div>
-                        </div>
-                    </Jumbotron>
                     <CarouselsOffer />
                     <div className="container bg-light my-4 justify-item-center">
                         <h2>Contact for Registration</h2>
@@ -664,6 +641,31 @@ class Home extends Component {
                         </div>
                     </form>
                     </div>
+
+                    <Jumbotron>
+                        <div className="container">
+                            <div className="row row-header">
+                                <div className="col-12 col-sm-5">
+                                    <h1>Drop Welcomes You</h1>
+                                    <p>Welcome to the best water service that provides pure and mineralized water 
+                                        in cheap rates.</p>
+                                </div>
+                                <div className="col-12 col-sm-5 offset-sm-2">
+                                    <h3>Consumer Login</h3>
+                                        <Form>
+                                        <Input type="text" id="id" name="id"
+                                        value={this.state.id3} onChange={(e) => {this.setState({id3: e.target.value })}} />
+                                        <Link to={`/consumer/${this.state.id3}`}>
+                                            <Button className="mt-2" outline type="submit" >
+                                                Submit
+                                            </Button>
+                                        </Link>
+                                        </Form>
+                                </div>
+                            </div>
+                        </div>
+                    </Jumbotron>
+
                     <Carousels />
                 </div>
             );
