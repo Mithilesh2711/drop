@@ -1,4 +1,4 @@
-import { UserRegistrationForm } from "../../../components/auth/user-registration-form";
+import UserRegistrationForm from "../../../components/auth/user-registration-form";
 
 export default function UserRegistration() {
   return (

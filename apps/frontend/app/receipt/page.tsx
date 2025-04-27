@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 const API_BASE_URL = 'http://localhost:5000';
 
-export default function PrintableReceipt() {
+function ReceiptContent() {
   const searchParams = useSearchParams();
   const [transaction, setTransaction] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -113,5 +113,13 @@ export default function PrintableReceipt() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ReceiptPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ReceiptContent />
+    </Suspense>
   );
 }

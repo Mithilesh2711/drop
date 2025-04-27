@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ interface TransactionFormData {
   name: string;
 }
 
-export default function AddTransaction() {
+function AddTransactionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userId = searchParams?.get('userId');
@@ -469,5 +469,13 @@ export default function AddTransaction() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function AddTransactionPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AddTransactionContent />
+    </Suspense>
   );
 }
