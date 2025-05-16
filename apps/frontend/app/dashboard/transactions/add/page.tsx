@@ -19,6 +19,7 @@ interface Plan {
   _id: string;
   name: string;
   monthlyCharge: number;
+  securityDeposit: number;
 }
 
 interface TransactionFormData {
@@ -217,7 +218,7 @@ function AddTransactionContent() {
         totalPayableAmount: totalPayableAmount,
         paymentDetails: formData.paymentDetails,
         receipt: formData.receipt.map(item => ({
-          ...item,
+          headName: item.headName,
           headAmount: Number(item.headAmount.toFixed(2))
         })),
         date: new Date(),
@@ -244,7 +245,9 @@ function AddTransactionContent() {
         title: "Success",
         description: "Transaction created successfully",
       });
-      router.push(`/dashboard/users/${userId}`);
+      
+      // Redirect to the transaction details page
+      router.push(`/dashboard/transactions/${data._id}`);
     } catch (error) {
       console.error("Error creating transaction:", error);
       toast({
@@ -282,16 +285,19 @@ function AddTransactionContent() {
                       const selectedPlan = plans.find(p => p.name === e.target.value);
                       console.log('Found plan:', selectedPlan);
                       if (selectedPlan) {
+                        // Create receipt item only for rent
+                        const receiptItems: ReceiptItem[] = [
+                          {
+                            headName: "Rent" as const,
+                            headAmount: selectedPlan.monthlyCharge
+                          }
+                        ];
+                        
                         setFormData({
                           ...formData,
                           planName: selectedPlan.name,
                           totalPayableAmount: String(selectedPlan.monthlyCharge),
-                          receipt: [
-                            {
-                              headName: "Rent",
-                              headAmount: selectedPlan.monthlyCharge
-                            }
-                          ]
+                          receipt: receiptItems
                         });
                       }
                     }}

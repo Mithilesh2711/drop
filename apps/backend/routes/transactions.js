@@ -67,7 +67,8 @@ router.post('/', async (req, res) => {
       totalPaidAmount,
       paymentDetails,
       userId,
-      totalPayableAmount
+      totalPayableAmount,
+      receipt
     } = req.body;
 
     if (!customerId || !totalPaidAmount || !paymentDetails) {
@@ -84,6 +85,7 @@ router.post('/', async (req, res) => {
       totalPaidAmount,
       totalPayableAmount,
       userId,
+      receipt,
       paymentDetails: {
         paymentMode: paymentDetails.paymentMode,
         refNo: paymentDetails.refNo
@@ -185,6 +187,17 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching transaction:', error);
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Get all transactions
+router.get('/', async (req, res) => {
+  try {
+    const transactions = await Transaction.find().sort({ date: -1 });
+    res.json(transactions);
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ message: 'Failed to fetch transactions' });
   }
 });
 

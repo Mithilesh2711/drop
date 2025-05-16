@@ -50,14 +50,14 @@ export function NavHeader() {
             <Link href="/dashboard" className="text-xl font-bold">
               Dashboard
             </Link>
-            <Link href="/dashboard/employees" className="hover:text-gray-600">
-              Employees
-            </Link>
             <Link href="/dashboard/users" className="hover:text-gray-600">
               Users
             </Link>
             <Link href="/dashboard/plans" className="hover:text-gray-600">
               Plans
+            </Link>
+            <Link href="/dashboard/transactions" className="hover:text-gray-600">
+              Transactions
             </Link>
             <Link href="/admin/location-codes" className="hover:text-gray-600">
               Location Codes

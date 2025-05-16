@@ -6,16 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Loader2, Plus, Pencil, Trash2, X } from 'lucide-react';
+import { Loader2, Plus, Pencil, Trash2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 // API base URL - change this to match your backend server
 const API_BASE_URL = 'http://localhost:5000/api';
+const ITEMS_PER_PAGE = 10;
 
 export default function LocationCodesAdmin() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingLocation, setEditingLocation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState({
     pincode: '',
     state: '',
@@ -140,6 +143,25 @@ export default function LocationCodesAdmin() {
     }
   };
 
+  // Filter locations based on search query
+  const filteredLocations = locations.filter(location => {
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      location.pincode.toLowerCase().includes(searchLower) ||
+      location.district.toLowerCase().includes(searchLower)
+    );
+  });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredLocations.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedLocations = filteredLocations.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -149,20 +171,21 @@ export default function LocationCodesAdmin() {
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <Card className="bg-white">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Location Codes Management</CardTitle>
-          {!isEditing && (
-            <Button onClick={() => setIsEditing(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add New Location
-            </Button>
-          )}
-        </CardHeader>
-        <CardContent>
-          {isEditing && (
-            <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Location Codes</h1>
+        {!isEditing && (
+          <Button onClick={() => setIsEditing(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add New Location
+          </Button>
+        )}
+      </div>
+
+      {isEditing && (
+        <Card className="mb-4">
+          <CardContent className="pt-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Pincode</label>
@@ -221,51 +244,105 @@ export default function LocationCodesAdmin() {
                 </Button>
               </div>
             </form>
-          )}
+          </CardContent>
+        </Card>
+      )}
 
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Pincode</TableHead>
-                <TableHead>State</TableHead>
-                <TableHead>District</TableHead>
-                <TableHead>City</TableHead>
-                <TableHead>District Code</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
+      <div className="flex items-center gap-4 mb-4">
+        <Input
+          placeholder="Search by pincode or district..."
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="max-w-sm"
+        />
+      </div>
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Pincode</TableHead>
+              <TableHead>State</TableHead>
+              <TableHead>District</TableHead>
+              <TableHead>City</TableHead>
+              <TableHead>District Code</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedLocations.map((location) => (
+              <TableRow key={location.pincode}>
+                <TableCell>{location.pincode}</TableCell>
+                <TableCell>{location.state}</TableCell>
+                <TableCell>{location.district}</TableCell>
+                <TableCell>{location.city}</TableCell>
+                <TableCell>{location.districtCode}</TableCell>
+                <TableCell>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(location)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(location.pincode)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {locations.map((location) => (
-                <TableRow key={location.pincode}>
-                  <TableCell>{location.pincode}</TableCell>
-                  <TableCell>{location.state}</TableCell>
-                  <TableCell>{location.district}</TableCell>
-                  <TableCell>{location.city}</TableCell>
-                  <TableCell>{location.districtCode}</TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(location)}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDelete(location.pincode)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-2">
+          <div className="text-sm text-muted-foreground">
+            Showing {startIndex + 1} to {Math.min(endIndex, filteredLocations.length)} of {filteredLocations.length} locations
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handlePageChange(page)}
+                  className="h-8 w-8 p-0"
+                >
+                  {page}
+                </Button>
               ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

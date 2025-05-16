@@ -27,7 +27,14 @@ const TransactionSchema = new mongoose.Schema({
   receipt: [{
     headName: { type: String, required: true },
     headAmount: { type: Number, required: true }
-  }]
+  }],
+  status: {
+    type: String,
+    enum: ['success', 'failed', 'pending'],
+    default: 'pending'
+  }
+}, {
+  timestamps: true
 });
 
 module.exports = mongoose.models.Transaction || mongoose.model("Transaction", TransactionSchema);
